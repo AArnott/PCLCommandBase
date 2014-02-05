@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>PCLCommandBase</id>
+    <version>0.1.0-pre</version>
+    <title>PCL CommandBase</title>
+    <authors>Andrew Arnott</authors>
+    <owners>Andrew Arnott</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>https://github.com/AArnott/PCLCommandBase</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Provides a common base class for ICommand implementations, and a BindableBase class for your view models.</description>
+    <copyright>Copyright 2014</copyright>
+    <tags>PCL mobile viewmodel</tags>
+  </metadata>
+	<files>
+		<file src="bin\release\PCLCommandBase.dll" target="lib\portable-win+net45+wp80+MonoAndroid+MonoTouch" />
+		<file src="bin\release\PCLCommandBase.pdb" target="lib\portable-win+net45+wp80+MonoAndroid+MonoTouch" />
+		<file src="bin\release\PCLCommandBase.xml" target="lib\portable-win+net45+wp80+MonoAndroid+MonoTouch" />
+	</files>
+</package>
