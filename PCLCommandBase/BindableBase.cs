@@ -1,4 +1,4 @@
-﻿namespace Dart {
+﻿namespace PCLCommandBase {
 	using System;
 	using System.Collections.Generic;
 	using System.ComponentModel;
