@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippet Format="1.0.0" xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+	<Header>
+		<Title>Adds a property that complies with INotifyPropertyChanged.</Title>
+		<Author>Andrew Arnott</Author>
+		<Shortcut>propn</Shortcut>
+		<Description>Adds a property that complies with INotifyPropertyChanged.</Description>
+		<SnippetTypes>
+			<SnippetType>Expansion</SnippetType>
+		</SnippetTypes>
+	</Header>
+	<Snippet>
+		<Declarations>
+			<Literal>
+				<ID>propType</ID>
+				<Default>string</Default>
+			</Literal>
+			<Literal>
+				<ID>fieldName</ID>
+				<Default>name</Default>
+			</Literal>
+			<Literal>
+				<ID>propertyName</ID>
+				<Default>Name</Default>
+			</Literal>
+		</Declarations>
+		<Code Language="CSharp">
+			<![CDATA[private $propType$ $fieldName$;
+			public $propType$ $propertyName$ {
+				get { return this.$fieldName$; }
+				set { this.SetProperty(ref this.$fieldName$, value); }
+			}
+			$end$]]>
+		</Code>
+	</Snippet>
+</CodeSnippet>
