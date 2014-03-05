@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>PCLCommandBase</id>
-    <version>0.1.1-pre</version>
+    <version>0.1.2-pre</version>
     <title>PCL CommandBase</title>
     <authors>Andrew Arnott</authors>
     <owners>Andrew Arnott</owners>
@@ -12,10 +12,15 @@
     <description>Provides a common base class for ICommand implementations, and a BindableBase class for your view models.</description>
     <copyright>Copyright 2014</copyright>
     <tags>PCL mobile viewmodel</tags>
+    <dependencies>
+      <group>
+        <dependency id="Validation" version="[2.0,3.0)" />
+      </group>
+    </dependencies>
   </metadata>
-	<files>
-		<file src="bin\release\PCLCommandBase.dll" target="lib\portable-win+net45+wp80+MonoAndroid+MonoTouch" />
-		<file src="bin\release\PCLCommandBase.pdb" target="lib\portable-win+net45+wp80+MonoAndroid+MonoTouch" />
-		<file src="bin\release\PCLCommandBase.xml" target="lib\portable-win+net45+wp80+MonoAndroid+MonoTouch" />
-	</files>
+  <files>
+    <file src="bin\release\PCLCommandBase.dll" target="lib\portable-win+net45+wp80+MonoAndroid+MonoTouch" />
+    <file src="bin\release\PCLCommandBase.pdb" target="lib\portable-win+net45+wp80+MonoAndroid+MonoTouch" />
+    <file src="bin\release\PCLCommandBase.xml" target="lib\portable-win+net45+wp80+MonoAndroid+MonoTouch" />
+  </files>
 </package>
