@@ -14,7 +14,8 @@
     <tags>PCL mobile viewmodel</tags>
     <dependencies>
       <group>
-        <dependency id="Validation" version="[2.0,3.0)" />
+        <dependency id="Validation" version="[2.0.4,3.0)" />
+        <dependency id="Microsoft.Bcl.Async" version="1.0.168" />
       </group>
     </dependencies>
   </metadata>
