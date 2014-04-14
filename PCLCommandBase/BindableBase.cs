@@ -23,6 +23,12 @@
 		/// </summary>
 		public event PropertyChangedEventHandler PropertyChanged;
 
+		/// <summary>
+		/// Gets a value indicating whether this instance is being disposed.
+		/// </summary>
+		/// <remarks>
+		/// Unless overridden by a derived class, this always returns <c>false</c>.
+		/// </remarks>
 		protected virtual bool IsDisposing {
 			get { return false; }
 		}
@@ -124,6 +130,13 @@
 			this.RegisterDependentProperty(GetPropertyName(baseProperty), GetPropertyName(dependentProperty));
 		}
 
+		/// <summary>
+		/// Gets the name of the property referenced in an expression.
+		/// </summary>
+		/// <typeparam name="T">The type of value returned by the property.</typeparam>
+		/// <param name="propertyExpression">The property expression.</param>
+		/// <returns>The name of the property.</returns>
+		/// <exception cref="System.ArgumentException">Thrown if the expression is in an unrecognized format.</exception>
 		protected static string GetPropertyName<T>(Expression<T> propertyExpression) {
 			var memberExpression = propertyExpression.Body as MemberExpression;
 			if (memberExpression == null) {
