@@ -77,6 +77,7 @@
 		/// </summary>
 		/// <param name="parameter">The parameter.</param>
 		async void ICommand.Execute(object parameter) {
+			Verify.Operation(!this.CanExecute(parameter), "The command cannot execute right now. It may already be executing.");
 			this.executionCancellationSource = new CancellationTokenSource();
 			this.OnCanExecuteChanged();
 
