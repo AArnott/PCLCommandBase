@@ -90,7 +90,7 @@
 		/// <summary>
 		/// Notifies listeners that a property value has changed.
 		/// </summary>
-		/// <param name="propertyExpression">An expression that is the member that has been changed.</param>
+		/// <param name="expression">An expression that is the member that has been changed.</param>
 		protected void OnPropertyChanged<T>(Expression<Func<T>> expression) {
 			this.OnPropertyChanged(GetPropertyName(expression));
 		}

@@ -73,16 +73,18 @@
 		}
 
 		/// <summary>
-		/// Executes the command with the specified parameter.
+		/// Executes the command.
 		/// </summary>
-		/// <param name="parameter">The parameter.</param>
-		async void ICommand.Execute(object parameter) {
+		/// <param name="parameter">The command parameter.</param>
+		/// <param name="cancellationToken">The cancellation token.</param>
+		/// <returns>The result of command execution.</returns>
+		public async Task ExecuteAsync(object parameter = null, CancellationToken cancellationToken = default(CancellationToken)) {
 			Verify.Operation(!this.CanExecute(parameter), "The command cannot execute right now. It may already be executing.");
-			this.executionCancellationSource = new CancellationTokenSource();
+			this.executionCancellationSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 			this.OnCanExecuteChanged();
 
 			try {
-				await this.ExecuteAsync(parameter, this.executionCancellationSource.Token);
+				await this.ExecuteCoreAsync(parameter, this.executionCancellationSource.Token);
 			} catch (OperationCanceledException) {
 			} finally {
 				this.executionCancellationSource = null;
@@ -106,6 +108,14 @@
 		}
 
 		/// <summary>
+		/// Executes the command with the specified parameter.
+		/// </summary>
+		/// <param name="parameter">The parameter.</param>
+		async void ICommand.Execute(object parameter) {
+			await this.ExecuteAsync(parameter, CancellationToken.None);
+		}
+
+		/// <summary>
 		/// This executes the actual command body.
 		/// </summary>
 		/// <param name="parameter">The parameter, if any was provided.</param>
@@ -115,7 +125,7 @@
 		/// May be <see cref="NonAsync" /> if the overriding method does not use the 
 		/// <c>async</c> keyword.
 		/// </returns>
-		public abstract Task ExecuteAsync(object parameter, CancellationToken cancellationToken);
+		protected abstract Task ExecuteCoreAsync(object parameter, CancellationToken cancellationToken);
 
 		/// <summary>
 		/// Called when <see cref="CanExecute(object)"/> is expected to return a different result.
