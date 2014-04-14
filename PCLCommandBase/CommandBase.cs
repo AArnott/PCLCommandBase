@@ -33,6 +33,11 @@
 		private CancellationTokenSource executionCancellationSource;
 
 		/// <summary>
+		/// The backing field for the <see cref="LastCommandFault"/> property.
+		/// </summary>
+		private Exception lastCommandFault;
+
+		/// <summary>
 		/// Occurs when the value returned by <see cref="CanExecute(object)"/> changes.
 		/// </summary>
 		public event EventHandler CanExecuteChanged;
@@ -41,6 +46,7 @@
 		/// Initializes a new instance of the <see cref="CommandBase"/> class.
 		/// </summary>
 		protected CommandBase() {
+			this.RegisterDependentProperty(() => LastCommandFault, () => IsFaulted);
 		}
 
 		/// <summary>
@@ -64,6 +70,32 @@
 		}
 
 		/// <summary>
+		/// Gets a value indicating whether the last invocation of this command faulted.
+		/// </summary>
+		/// <remarks>
+		/// The fault may be observed by reading the <see cref="LastCommandFault"/> property.
+		/// It may be reset by invoking the <see cref="ClearFault"/> method.
+		/// </remarks>
+		public bool IsFaulted {
+			get { return this.LastCommandFault != null; }
+		}
+
+		/// <summary>
+		/// Gets the exception thrown from the last execution of this command, if any.
+		/// </summary>
+		public Exception LastCommandFault {
+			get { return this.lastCommandFault; }
+			set { this.SetProperty(ref this.lastCommandFault, value); }
+		}
+
+		/// <summary>
+		/// Resets <see cref="LastCommandFault"/> to <c>null</c>.
+		/// </summary>
+		public void ClearFault() {
+			this.LastCommandFault = null;
+		}
+
+		/// <summary>
 		/// Determines whether this command can execute given the specified parameter.
 		/// </summary>
 		/// <param name="parameter">The parameter value.</param>
@@ -82,6 +114,7 @@
 			Verify.Operation(!this.CanExecute(parameter), "The command cannot execute right now. It may already be executing.");
 			this.executionCancellationSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 			this.OnCanExecuteChanged();
+			this.ClearFault();
 
 			try {
 				await this.ExecuteCoreAsync(parameter, this.executionCancellationSource.Token);
@@ -112,7 +145,11 @@
 		/// </summary>
 		/// <param name="parameter">The parameter.</param>
 		async void ICommand.Execute(object parameter) {
-			await this.ExecuteAsync(parameter, CancellationToken.None);
+			try {
+				await this.ExecuteAsync(parameter, CancellationToken.None);
+			} catch (Exception ex) {
+				this.LastCommandFault = ex;
+			}
 		}
 
 		/// <summary>
