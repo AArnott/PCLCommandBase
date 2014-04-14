@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>PCLCommandBase</id>
-    <version>0.1.2-pre</version>
+    <version>0.1.2</version>
     <title>PCL CommandBase</title>
     <authors>Andrew Arnott</authors>
     <owners>Andrew Arnott</owners>
