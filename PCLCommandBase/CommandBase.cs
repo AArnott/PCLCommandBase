@@ -111,7 +111,7 @@
 		/// <param name="cancellationToken">The cancellation token.</param>
 		/// <returns>The result of command execution.</returns>
 		public async Task ExecuteAsync(object parameter = null, CancellationToken cancellationToken = default(CancellationToken)) {
-			Verify.Operation(!this.CanExecute(parameter), "The command cannot execute right now. It may already be executing.");
+			Verify.Operation(this.CanExecute(parameter), "The command cannot execute right now. It may already be executing.");
 			this.executionCancellationSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 			this.OnCanExecuteChanged();
 			this.ClearFault();
