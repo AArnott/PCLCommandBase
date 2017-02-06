@@ -22,7 +22,7 @@
 		/// their <see cref="ExecuteAsync(object, CancellationToken)"/> overrides
 		/// if the method does not use the <c>async</c> keyword.
 		/// </summary>
-		protected static readonly Task NonAsync = TaskEx.FromResult<object>(null);
+		protected static readonly Task NonAsync = Task.FromResult<object>(null);
 
 		/// <summary>
 		/// The execution cancellation source for the currently executing command.

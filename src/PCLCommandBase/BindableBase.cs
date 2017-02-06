@@ -46,7 +46,7 @@
 		/// <returns>True if the value was changed, false if the existing value matched the
 		/// desired value.</returns>
 		protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] String propertyName = null) {
-			if (typeof(T).IsClass) {
+			if (typeof(T).GetTypeInfo().IsClass) {
 				if (object.ReferenceEquals(storage, value)) {
 					return false;
 				}

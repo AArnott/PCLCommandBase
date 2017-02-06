@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.0</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/AArnott/PCLCommandBase</PackageProjectUrl>
+    <Copyright>Copyright © Andrew Arnott</Copyright>
+    <PackageTags>PCL mobile viewmodel</PackageTags>
+    <Description>Provides a common base class for ICommand implementations, and a BindableBase class for your view models.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nerdbank.GitVersioning" Version="1.5.62" />
+    <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
+    <PackageReference Include="Validation" Version="2.3.7" />
+  </ItemGroup>
+
+</Project>
