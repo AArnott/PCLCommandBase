@@ -34,7 +34,7 @@ namespace PCLCommandBase
 		/// </summary>
 		protected CommandBase()
 		{
-			this.RegisterDependentProperty(() => this.LastCommandFault, () => this.IsFaulted);
+			this.RegisterDependentProperty(nameof(this.LastCommandFault), nameof(this.IsFaulted));
 		}
 
 		/// <summary>
@@ -65,8 +65,12 @@ namespace PCLCommandBase
 		public bool IsFaulted => this.LastCommandFault is object;
 
 		/// <summary>
-		/// Gets or sets the exception thrown from the last execution of this command, if any.
+		/// Gets or sets the exception thrown from the last invocation of <see cref="ICommand.Execute(object)"/>, if any.
 		/// </summary>
+		/// <remarks>
+		/// This property does <em>not</em> capture faults from invocations of <see cref="ExecuteAsync(object?, CancellationToken)"/>
+		/// since that result is visible to the caller.
+		/// </remarks>
 		public Exception? LastCommandFault
 		{
 			get => this.lastCommandFault;
@@ -83,7 +87,7 @@ namespace PCLCommandBase
 		/// </summary>
 		/// <param name="parameter">The parameter value.</param>
 		/// <returns><see langword="true"/> if the command can execute; <see langword="false"/> otherwise.</returns>
-		public virtual bool CanExecute(object? parameter) => this.executionCancellationSource is null;
+		public virtual bool CanExecute(object? parameter = null) => this.executionCancellationSource is null;
 
 		/// <summary>
 		/// Executes the command.
@@ -101,9 +105,6 @@ namespace PCLCommandBase
 			try
 			{
 				await this.ExecuteCoreAsync(parameter, this.executionCancellationSource.Token);
-			}
-			catch (OperationCanceledException)
-			{
 			}
 			finally
 			{
@@ -125,7 +126,7 @@ namespace PCLCommandBase
 			if (cancellationSource is object)
 			{
 				cancellationSource.Cancel();
-				this.OnPropertyChanged(() => this.IsCancellationRequested);
+				this.OnPropertyChanged(nameof(this.IsCancellationRequested));
 			}
 		}
 
@@ -158,8 +159,8 @@ namespace PCLCommandBase
 		/// </summary>
 		protected virtual void OnCanExecuteChanged()
 		{
-			this.OnPropertyChanged(() => this.IsExecuting);
-			this.OnPropertyChanged(() => this.IsCancellationRequested);
+			this.OnPropertyChanged(nameof(this.IsExecuting));
+			this.OnPropertyChanged(nameof(this.IsCancellationRequested));
 			this.CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 		}
 	}

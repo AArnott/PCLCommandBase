@@ -6,7 +6,6 @@ namespace PCLCommandBase
 	using System;
 	using System.Collections.Generic;
 	using System.ComponentModel;
-	using System.Linq.Expressions;
 	using System.Reflection;
 	using System.Runtime.CompilerServices;
 	using System.Runtime.Serialization;
@@ -34,34 +33,7 @@ namespace PCLCommandBase
 		/// <remarks>
 		/// Unless overridden by a derived class, this always returns <see langword="false"/>.
 		/// </remarks>
-		protected virtual bool IsDisposing
-		{
-			get { return false; }
-		}
-
-		/// <summary>
-		/// Gets the name of the property referenced in an expression.
-		/// </summary>
-		/// <typeparam name="T">The type of value returned by the property.</typeparam>
-		/// <param name="propertyExpression">The property expression.</param>
-		/// <returns>The name of the property.</returns>
-		/// <exception cref="System.ArgumentException">Thrown if the expression is in an unrecognized format.</exception>
-		protected static string GetPropertyName<T>(Expression<T> propertyExpression)
-		{
-			var memberExpression = propertyExpression.Body as MemberExpression;
-			if (memberExpression is null)
-			{
-				var unaryExpression = propertyExpression.Body as UnaryExpression;
-				memberExpression = unaryExpression?.Operand as MemberExpression;
-			}
-
-			if (memberExpression is null)
-			{
-				throw new ArgumentException();
-			}
-
-			return memberExpression.Member.Name;
-		}
+		protected virtual bool IsDisposing => false;
 
 		/// <summary>
 		/// Checks if a property already matches a desired value.  Sets the property and
@@ -126,16 +98,6 @@ namespace PCLCommandBase
 		}
 
 		/// <summary>
-		/// Notifies listeners that a property value has changed.
-		/// </summary>
-		/// <typeparam name="T">The type of value stored by the changed property.</typeparam>
-		/// <param name="expression">An expression that is the member that has been changed.</param>
-		protected void OnPropertyChanged<T>(Expression<Func<T>> expression)
-		{
-			this.OnPropertyChanged(GetPropertyName(expression));
-		}
-
-		/// <summary>
 		/// Registers one property as a dependent property such that changed events for one
 		/// causes the changed events of the other.
 		/// </summary>
@@ -158,22 +120,6 @@ namespace PCLCommandBase
 			}
 
 			dependentProperties.Add(dependentProperty);
-		}
-
-		/// <summary>
-		/// Registers one property as a dependent property such that changed events for one
-		/// causes the changed events of the other.
-		/// </summary>
-		/// <typeparam name="T1">The type of value stored by the base property.</typeparam>
-		/// <typeparam name="T2">The type of value stored by the dependent property.</typeparam>
-		/// <param name="baseProperty">An expression of simply the property with backing field that may change..</param>
-		/// <param name="dependentProperty">An expression of simply the property that derives its value from <paramref name="baseProperty"/>.</param>
-		protected void RegisterDependentProperty<T1, T2>(Expression<Func<T1>> baseProperty, Expression<Func<T2>> dependentProperty)
-		{
-			Requires.NotNull(baseProperty, "baseProperty");
-			Requires.NotNull(dependentProperty, "dependentProperty");
-
-			this.RegisterDependentProperty(GetPropertyName(baseProperty), GetPropertyName(dependentProperty));
 		}
 	}
 }
