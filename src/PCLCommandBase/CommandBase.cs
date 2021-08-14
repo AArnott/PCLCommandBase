@@ -87,6 +87,9 @@ namespace PCLCommandBase
 		/// </summary>
 		/// <param name="parameter">The parameter value.</param>
 		/// <returns><see langword="true"/> if the command can execute; <see langword="false"/> otherwise.</returns>
+		/// <remarks>
+		/// Overrides of this method should call the base implementation, which disables the command when it is currently running.
+		/// </remarks>
 		public virtual bool CanExecute(object? parameter = null) => this.executionCancellationSource is null;
 
 		/// <summary>
@@ -152,7 +155,7 @@ namespace PCLCommandBase
 		/// <param name="parameter">The parameter, if any was provided.</param>
 		/// <param name="cancellationToken">The cancellation token.</param>
 		/// <returns>A task that represents the completion of the async command.</returns>
-		protected abstract Task ExecuteCoreAsync(object? parameter, CancellationToken cancellationToken);
+		protected abstract Task ExecuteCoreAsync(object? parameter = null, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Called when <see cref="CanExecute(object)"/> is expected to return a different result.

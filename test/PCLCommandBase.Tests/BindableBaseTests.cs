@@ -43,6 +43,22 @@ public class BindableBaseTests
 		Assert.Equal(nameof(instance.IntPlus5), events[1].PropertyName);
 	}
 
+	[Fact]
+	public void DisposingObjectDoesNotRaiseEvents()
+	{
+		var instance = new BindableBaseDerived();
+		var events = new List<PropertyChangedEventArgs>();
+		instance.PropertyChanged += (s, e) =>
+		{
+			Assert.Same(instance, s);
+			events.Add(e);
+		};
+
+		instance.Disposing = true;
+		instance.SomeIntProperty = 3;
+		Assert.Empty(events);
+	}
+
 	private class BindableBaseDerived : BindableBase
 	{
 		private string? someStringProperty;
@@ -53,6 +69,8 @@ public class BindableBaseTests
 		{
 			this.RegisterDependentProperty(nameof(this.InputProperty), nameof(this.IntPlus5));
 		}
+
+		internal bool Disposing { get; set; }
 
 		internal string? SomeStringProperty
 		{
@@ -73,5 +91,7 @@ public class BindableBaseTests
 		}
 
 		internal int IntPlus5 => this.SomeIntProperty + 5;
+
+		protected override bool IsDisposing => this.Disposing;
 	}
 }

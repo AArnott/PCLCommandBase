@@ -25,14 +25,20 @@ namespace PCLCommandBase
 		{
 			Requires.NotNull(commandToCancel, "commandToCancel");
 			this.commandToCancel = commandToCancel;
-			commandToCancel.CanExecuteChanged += (s, e) => this.OnCanExecuteChanged();
+			commandToCancel.PropertyChanged += (s, e) =>
+			{
+				if (e.PropertyName == nameof(CommandBase.IsCancellationRequested) || e.PropertyName == nameof(CommandBase.IsExecuting))
+				{
+					this.OnCanExecuteChanged();
+				}
+			};
 		}
 
 		/// <inheritdoc/>
-		public override bool CanExecute(object? parameter) => this.commandToCancel.IsExecuting && !this.commandToCancel.IsCancellationRequested;
+		public override bool CanExecute(object? parameter = null) => this.commandToCancel.IsExecuting && !this.commandToCancel.IsCancellationRequested;
 
 		/// <inheritdoc/>
-		protected override Task ExecuteCoreAsync(object? parameter, CancellationToken cancellationToken)
+		protected override Task ExecuteCoreAsync(object? parameter = null, CancellationToken cancellationToken = default)
 		{
 			this.commandToCancel.Cancel();
 			return Task.CompletedTask;

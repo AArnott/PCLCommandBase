@@ -27,7 +27,12 @@ namespace PCLCommandBase
 		}
 
 		/// <inheritdoc cref="CanExecute(object?)"/>
-		protected virtual bool CanExecute(T parameter)
+		/// <remarks>
+		/// This method is only called after first calling <see cref="CanExecute(object?)"/>,
+		/// and the base method implementation of <em>this</em> method is empty, so callers
+		/// needn't call the base implementation.
+		/// </remarks>
+		protected virtual bool CanExecute(T? parameter)
 		{
 			// No need to call the base method here. This method's caller already has.
 			return true;
@@ -36,7 +41,7 @@ namespace PCLCommandBase
 		/// <inheritdoc/>
 		protected sealed override Task ExecuteCoreAsync(object? parameter, CancellationToken cancellationToken)
 		{
-			return this.ExecuteAsync((T?)parameter, cancellationToken);
+			return this.ExecuteCoreAsync((T?)parameter, cancellationToken);
 		}
 
 		/// <inheritdoc cref="ExecuteCoreAsync(object?, CancellationToken)"/>

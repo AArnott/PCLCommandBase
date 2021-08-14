@@ -95,6 +95,7 @@ public class CommandBaseTests : TestBase
 		await Assert.ThrowsAsync<OperationCanceledException>(() => commandExecTask);
 
 		Assert.Null(this.command.LastCommandFault);
+		Assert.False(this.command.IsFaulted);
 		Assert.False(this.command.IsCancellationRequested);
 	}
 
@@ -122,7 +123,22 @@ public class CommandBaseTests : TestBase
 		}
 
 		Assert.IsType<OperationCanceledException>(this.command.LastCommandFault);
+		Assert.True(this.command.IsFaulted);
 		Assert.False(this.command.IsCancellationRequested);
+
+		((ICommand)this.command).Execute(null);
+		Assert.Null(this.command.LastCommandFault);
+		Assert.False(this.command.IsFaulted);
+	}
+
+	[Fact]
+	public void ClearFault()
+	{
+		this.command.CompleteCommandTask = Task.FromException(new InvalidOperationException());
+		((ICommand)this.command).Execute(null);
+		Assert.True(this.command.IsFaulted);
+		this.command.ClearFault();
+		Assert.False(this.command.IsFaulted);
 	}
 
 	[Fact]
