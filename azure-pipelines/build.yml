@@ -1,0 +1,11 @@
+jobs:
+- job: Linux
+  pool:
+    vmImage: Ubuntu 20.04
+  steps:
+  - checkout: self
+    clean: true
+  - template: install-dependencies.yml
+  - template: dotnet.yml
+  - template: publish-codecoverage.yml
+  - template: publish-deployables.yml
