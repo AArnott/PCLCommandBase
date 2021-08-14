@@ -125,6 +125,40 @@ public class CommandBaseTests : TestBase
 		Assert.False(this.command.IsCancellationRequested);
 	}
 
+	[Fact]
+	public async Task IsExecuting()
+	{
+		Assert.False(this.command.IsExecuting);
+		var eventsQueue = new AsyncQueue<PropertyChangedEventArgs>();
+		this.command.PropertyChanged += (s, e) =>
+		{
+			Assert.Same(this.command, s);
+			eventsQueue.Enqueue(e);
+		};
+
+		var commandDelay = new AsyncManualResetEvent();
+		this.command.CompleteCommandTask = commandDelay.WaitAsync();
+
+		Task commandTask = this.command.ExecuteAsync();
+
+		while ((await eventsQueue.DequeueAsync(this.TimeoutToken)).PropertyName != nameof(this.command.IsExecuting))
+		{
+		}
+
+		Assert.True(this.command.IsExecuting);
+
+		commandDelay.Set();
+		await commandTask;
+
+#pragma warning disable CA1508 // Avoid dead conditional code -- buggy compiler
+		while ((await eventsQueue.DequeueAsync(this.TimeoutToken)).PropertyName != nameof(this.command.IsExecuting))
+#pragma warning restore CA1508 // Avoid dead conditional code
+		{
+		}
+
+		Assert.False(this.command.IsExecuting);
+	}
+
 	private class DerivedCommandBase : CommandBase
 	{
 		internal int ExecutionCount { get; set; }
