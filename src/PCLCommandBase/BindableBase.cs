@@ -75,7 +75,7 @@ namespace PCLCommandBase
 		/// <param name="propertyName">Name of the property used to notify listeners.  This
 		/// value is optional and can be provided automatically when invoked from compilers
 		/// that support <see cref="CallerMemberNameAttribute"/>.</param>
-		protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+		protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
 		{
 			Requires.NotNull(propertyName!, nameof(propertyName));
 			if (this.IsDisposing)
