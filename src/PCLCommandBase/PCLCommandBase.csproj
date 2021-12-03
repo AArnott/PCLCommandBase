@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageTags>viewmodel UI</PackageTags>
     <Description>Provides a cross-platform and cross-UI framework common base class for ICommand implementations, and a BindableBase class for your view models.</Description>
   </PropertyGroup>
