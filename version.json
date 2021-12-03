@@ -3,5 +3,8 @@
   "publicReleaseRefSpec": [
     "^refs/heads/main$",
     "^refs/heads/v\\d+(?:\\.\\d+)$"
-  ]
+  ],
+  "cloudBuild": {
+    "setVersionVariables": false
+  }
 }
