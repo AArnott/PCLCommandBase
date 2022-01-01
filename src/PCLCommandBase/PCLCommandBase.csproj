@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Validation" Version="2.5.42" />
+    <PackageReference Include="Validation" Version="2.5.51" />
   </ItemGroup>
 
 </Project>
